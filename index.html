@@ -843,14 +843,10 @@
             const userAgent = navigator.userAgent.toLowerCase();
         
             if (/mobile|android|iphone|ipad|ipod/.test(userAgent)) {
-                return "mobile"; // celular/tablet
+                return window.matchMedia &&
+                    window.matchMedia('(prefers-color-scheme: dark)').matches;
             }
-        
-            return "desktop"; // computador
         }
-
-// Exemplo de uso:
-console.log("Dispositivo:", tipoDispositivo());
 
         // inicia em PT
         setLanguage("pt");
@@ -858,4 +854,5 @@ console.log("Dispositivo:", tipoDispositivo());
 
 </body>
 </html>
+
 

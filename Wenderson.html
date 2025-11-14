@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wenderson Carvalho Teixeira • Web Developer & Infrastructure</title>
+
+    <style>
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            transition: .3s;
+        }
+
+        /* ======= HEADER ======= */
+        header {
+            background: #4A4AE5;
+            padding: 40px 15px 30px;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header p {
+            font-size: 14px;
+            margin-top: 8px;
+            opacity: .85;
+        }
+
+        .typing {
+            display: inline-block;
+            border-right: 2px solid white;
+            white-space: nowrap;
+            overflow: hidden;
+            font-weight: 600;
+            animation: caret .7s infinite;
+        }
+
+        @keyframes caret {
+            50% { border-color: transparent; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* ======= BOTÃO DO MENU ======= */
+        #menuBtn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: #4A4AE5;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            transition: .3s;
+        }
+
+        #menuBtn:hover {
+            transform: scale(1.1);
+        }
+
+        /* ======= LANGUAGE SWITCH ======= */
+        #langSwitch {
+            position: absolute;
+            top: 15px;
+            right: 70px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 999px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.2);
+            transition: .2s;
+        }
+
+        .lang-btn.active {
+            background: #2f35c7;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .lang-btn:hover {
+            transform: scale(1.08);
+        }
+
+        /* ======= MENU SUSPENSO ANIMADO ======= */
+        nav {
+            display: none;
+            flex-direction: column;
+            background: white;
+            margin-top: 15px;
+            border-radius: 10px;
+            padding: 10px 15px;
+            text-align: left;
+            animation: fadeSlide .4s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        nav a {
+            color: #4A4AE5;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+            transition: .3s;
+        }
+
+        nav a:hover {
+            padding-left: 6px;
+            color: #2a2ac7;
+        }
+
+        nav a:last-child { border-bottom: none; }
+
+        /* ======= SEÇÕES ======= */
+        section {
+            padding: 28px 15px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #4A4AE5;
+            margin-bottom: 12px;
+            font-size: 22px;
+        }
+
+        h3 { margin: 0; }
+
+        .subtitulo {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.08);
+            margin-bottom: 18px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: .6s;
+        }
+
+        /* CARD VISÍVEL */
+        .visible {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        /* TAGS ANIMADAS */
+        .tag {
+            display: inline-block;
+            background: #e7e9ff;
+            color: #4A4AE5;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            margin: 2px 4px 2px 0;
+            transition: .3s;
+        }
+
+        .tag:hover {
+            transform: scale(1.15);
+            background: #4A4AE5;
+            color: white;
+        }
+
+        /* ACCORDION */
+        .accordion {
+            cursor: pointer;
+            padding: 10px 0;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: .3s;
+            gap: 10px;
+        }
+
+        .accordion:hover {
+            color: #4A4AE5;
+        }
+
+        .acc-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .acc-icon {
+            font-size: 14px;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s ease;
+        }
+
+        .accordion.open + .accordion-content {
+            /* max-height controlado via JS */
+        }
+
+        /* GRID */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        /* Botão Dark (modo simples) */
+        #darkBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4A4AE5;
+            padding: 12px 15px;
+            border-radius: 50%;
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 0 12px rgba(0,0,0,0.3);
+        }
+
+        .dark {
+            background: #141414;
+            color: #f1f1f1;
+        }
+
+        .dark header {
+            background: #2f35c7;
+        }
+
+        .dark nav {
+            background: #222;
+        }
+
+        .dark nav a {
+            color: #f1f1f1;
+            border-bottom: 1px solid #444;
+        }
+
+        .dark .card {
+            background: #222;
+            box-shadow: 0 0 12px rgba(0,0,0,0.6);
+        }
+
+        .dark h3 {
+            color: #fff;
+        }
+
+        /* Linguagens: JS controla o display, CSS não mexe */
+        .lang {}
+
+        /* RESPONSIVO */
+        @media (min-width: 768px) {
+            header h1 {
+                font-size: 30px;
+            }
+
+            header p {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Wenderson Carvalho Teixeira</h1>
+        <p id="typingText" class="typing"></p>
+
+        <!-- SWITCH DE IDIOMA -->
+        <div id="langSwitch">
+            <button id="btn-pt" class="lang-btn active" onclick="setLanguage('pt')">🇧🇷</button>
+            <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">🇺🇸</button>
+        </div>
+
+        <!-- botão que abre o menu -->
+        <button id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- MENU -->
+        <nav id="menuNav">
+            <a href="#sobre" class="lang lang-pt" onclick="toggleMenu()">Sobre</a>
+            <a href="#sobre" class="lang lang-en" onclick="toggleMenu()">About</a>
+
+            <a href="#experiencia" class="lang lang-pt" onclick="toggleMenu()">Experiência</a>
+            <a href="#experiencia" class="lang lang-en" onclick="toggleMenu()">Experience</a>
+
+            <a href="#formacao" class="lang lang-pt" onclick="toggleMenu()">Formação &amp; Certificações</a>
+            <a href="#formacao" class="lang lang-en" onclick="toggleMenu()">Education &amp; Certifications</a>
+
+            <a href="#habilidades" class="lang lang-pt" onclick="toggleMenu()">Habilidades</a>
+            <a href="#habilidades" class="lang lang-en" onclick="toggleMenu()">Skills</a>
+
+            <a href="#contato" class="lang lang-pt" onclick="toggleMenu()">Contato</a>
+            <a href="#contato" class="lang lang-en" onclick="toggleMenu()">Contact</a>
+        </nav>
+    </header>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+        <h2 class="lang lang-pt">Sobre</h2>
+        <h2 class="lang lang-en">About</h2>
+
+        <div class="card">
+            <div class="lang lang-pt">
+                <p>
+                    Graduado em Sistemas de Informação pela Universidade Newton Paiva, construí minha carreira ao longo de
+                    mais de 12 anos na área de Tecnologia da Informação, iniciando em Infraestrutura e evoluindo para o
+                    Desenvolvimento Web, onde atuo há 6 anos como Desenvolvedor na Movvi Logística.
+                </p>
+                <p>
+                    Desenvolvo sistemas utilizando PHP (Zend Framework, Symfony, Laravel), React, JavaScript, Node.js e
+                    MySQL, além de trabalhar com integrações via REST e EDI, criação de relatórios, dashboards e
+                    sustentação de aplicações em produção. Também realizo code review, versionamento, automações e
+                    melhorias contínuas seguindo boas práticas e metodologias ágeis (Scrum e Kanban).
+                </p>
+                <p>
+                    Minha vivência anterior com infraestrutura fortaleceu minha visão técnica, incluindo administração de
+                    servidores Linux, Docker, redes, firewalls, virtualização (VMware), backups e governança baseada em ITIL.
+                    Sou um profissional comprometido, colaborativo e sempre em busca de novas tecnologias, tendências e
+                    desafios que contribuam para meu crescimento e para resultados sólidos dentro das organizações.
+                </p>
+            </div>
+
+            <div class="lang lang-en">
+                <p>
+                    I hold a Bachelor’s degree in Information Systems from Universidade Newton Paiva and have built my
+                    career over more than 12 years in Information Technology, starting in Infrastructure and evolving into
+                    Web Development, where I have been working for the past 6 years as a Developer at Movvi Logística.
+                </p>
+                <p>
+                    I develop systems using PHP (Zend Framework, Symfony, Laravel), React, JavaScript, Node.js and MySQL,
+                    and work with REST and EDI integrations, report and dashboard creation, as well as application support
+                    and maintenance in production environments. I also perform code review, version control, automation and
+                    continuous improvement following best practices and agile methodologies (Scrum and Kanban).
+                </p>
+                <p>
+                    My previous experience in infrastructure strengthens my technical view, including Linux server
+                    administration, Docker, networks, firewalls, virtualization (VMware), backups and governance based on ITIL.
+                    I am a committed and collaborative professional, always seeking new technologies, trends and challenges
+                    that contribute to my growth and to solid results for the organizations I work with.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIÊNCIA -->
+    <section id="experiencia">
+        <h2 class="lang lang-pt">Experiência</h2>
+        <h2 class="lang lang-en">Experience</h2>
+
+        <!-- Movvi - Desenvolvedor Web -->
+        <div class="card">
+            <div class="accordion">
+                <div class="acc-title">
+                    <span class="lang lang-pt">Desenvolvedor Web · Movvi Logística</span>
+                    <span class="lang lang-en">Web Developer · Movvi Logística</span>
+                </div>
+                <span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="subtitulo lang lang-pt">set de 2019 – o momento · 6 anos 3 meses · Contagem e região, Brasil</div>
+                <div class="subtitulo lang lang-en">Sep 2019 – present · 6 years 3 months · Contagem area, Brazil</div>
+
+                <ul class="lang lang-pt">
+                    <li>Desenvolvimento de sistemas web com PHP (Zend Framework, Symfony, Laravel), React, Angular e MySQL.</li>
+                    <li>Planejamento e acompanhamento de tarefas utilizando Kanban (Jira, Trello).</li>
+                    <li>Code review e aplicação de boas práticas de versionamento (Git, Git Flow, Bitbucket).</li>
+                    <li>Testes de uso, validação de funcionalidades e correção de bugs em ambiente de produção.</li>
+                    <li>Integração de sistemas via APIs REST e EDI (Electronic Data Interchange), com foco em logística.</li>
+                    <li>Desenvolvimento de relatórios customizados e dashboards para times internos e clientes.</li>
+                    <li>Instalação, configuração e manutenção de ambientes com Docker, Linux e MySQL/MariaDB.</li>
+                    <li>Suporte e sustentação de sistemas, atendendo usuários internos e clientes externos.</li>
+                    <li>Consumo e implementação de APIs externas, garantindo segurança e performance.</li>
+                </ul>
+
+                <ul class="lang lang-en">
+                    <li>Developed web systems using PHP (Zend Framework, Symfony, Laravel), React, Angular and MySQL.</li>
+                    <li>Planned and tracked tasks using Kanban tools (Jira, Trello).</li>
+                    <li>Performed code review and applied best practices in version control (Git, Git Flow, Bitbucket).</li>
+                    <li>Executed usability tests, validated features and fixed bugs in production environments.</li>
+                    <li>Integrated systems via REST APIs and EDI (Electronic Data Interchange), focused on logistics.</li>
+                    <li>Developed custom reports and dashboards for internal teams and clients.</li>
+                    <li>Installed, configured and maintained environments using Docker, Linux and MySQL/MariaDB.</li>
+                    <li>Provided support and maintenance for systems, assisting internal users and external clients.</li>
+                    <li>Consumed and implemented external APIs, ensuring security and performance.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Movvi - Analista de Infraestrutura II -->
+        <div class="card">
+            <div class="accordion">
+                <div class="acc-title">
+                    <span class="lang lang-pt">Analista de Infraestrutura II · Movvi Logística</span>
+                    <span class="lang lang-en">Infrastructure Analyst II · Movvi Logística</span>
+                </div>
+                <span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="subtitulo lang lang-pt">set de 2013 – set de 2019 · 6 anos 1 mês · Contagem, Brasil</div>
+                <div class="subtitulo lang lang-en">Sep 2013 – Sep 2019 · 6 years 1 month · Contagem, Brazil</div>
+
+                <ul class="lang lang-pt">
+                    <li>Análise e solução de problemas relacionados a desktops e notebooks.</li>
+                    <li>Apoio à análise/solução de problemas em serviços de rede (AD, FileServer, PrintServer, DHCP, DNS, FTP, VPN, entre outros).</li>
+                    <li>Instalação, configuração e atualização de antivírus (Kaspersky Security).</li>
+                    <li>Acompanhamento e execução de mudanças no ambiente de TI.</li>
+                    <li>Controle e gerenciamento de contas de e-mails.</li>
+                    <li>Suporte a usuários internos e externos, presencial e remoto.</li>
+                    <li>Análise, controle e acompanhamento das atividades da área de suporte.</li>
+                    <li>Administração de rede, proxy (Fortigate) e firewall (Netfilter - iptables).</li>
+                    <li>Rotinas de backup em File Server Microsoft com Dell NetVault Backup.</li>
+                    <li>Backup e restauração de bases em SQL Server.</li>
+                    <li>Administração e operação em VMware (vCenter) e servidor Blade VRTX.</li>
+                    <li>Administração de redes wireless (Ubiquiti).</li>
+                    <li>Instalação e atualização de sistemas de gestão (Senior).</li>
+                </ul>
+
+                <ul class="lang lang-en">
+                    <li>Analyzed and solved issues related to desktops and notebooks.</li>
+                    <li>Supported troubleshooting of network services (AD, FileServer, PrintServer, DHCP, DNS, FTP, VPN and others).</li>
+                    <li>Installed, configured and updated antivirus solutions (Kaspersky Security).</li>
+                    <li>Monitored and executed changes in the IT environment.</li>
+                    <li>Controlled and managed email accounts.</li>
+                    <li>Provided on-site and remote support to internal and external users.</li>
+                    <li>Monitored and controlled support-related activities and tickets.</li>
+                    <li>Administered networks, proxy (Fortigate) and firewall (Netfilter - iptables).</li>
+                    <li>Performed backup routines on Microsoft File Server using Dell NetVault Backup.</li>
+                    <li>Backed up and restored SQL Server databases.</li>
+                    <li>Administered and operated VMware (vCenter) and Blade VRTX servers.</li>
+                    <li>Managed wireless networks (Ubiquiti).</li>
+                    <li>Installed and updated management systems (Senior).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Solvo - Analista de Field Service -->
+        <div class="card">
+            <div class="accordion">
+                <div class="acc-title">
+                    <span class="lang lang-pt">Analista de Field Service · Solvo Missão Crítica</span>
+                    <span class="lang lang-en">Field Service Analyst · Solvo Missão Crítica</span>
+                </div>
+                <span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="subtitulo lang lang-pt">jan de 2011 – set de 2013 · 2 anos 9 meses · Belo Horizonte e região, Brasil</div>
+                <div class="subtitulo lang lang-en">Jan 2011 – Sep 2013 · 2 years 9 months · Belo Horizonte area, Brazil</div>
+
+                <ul class="lang lang-pt">
+                    <li>Atuação diária com base nas melhores práticas da metodologia ITIL.</li>
+                    <li>Suporte a usuários internos e externos.</li>
+                    <li>Análise e solução de problemas relacionados a desktops.</li>
+                    <li>Apoio à análise/solução de problemas em serviços de rede (AD, FileServer, PrintServer, DHCP, DNS, Office365, Exchange, FTP, VPN, entre outros).</li>
+                    <li>Acompanhamento e execução de mudanças no ambiente de TI.</li>
+                    <li>Acompanhamento de incidentes e apoio à administração de rede.</li>
+                </ul>
+
+                <ul class="lang lang-en">
+                    <li>Worked daily following ITIL best practices.</li>
+                    <li>Provided support to internal and external users.</li>
+                    <li>Analyzed and solved issues related to desktops.</li>
+                    <li>Supported troubleshooting of network services (AD, FileServer, PrintServer, DHCP, DNS, Office365, Exchange, FTP, VPN and others).</li>
+                    <li>Monitored and executed changes in the IT environment.</li>
+                    <li>Followed up on incidents and supported network administration.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Belgo Bekaert - Estagiário TI -->
+        <div class="card">
+            <div class="accordion">
+                <div class="acc-title">
+                    <span class="lang lang-pt">Estagiário de TI · Belgo Bekaert Arames Ltda</span>
+                    <span class="lang lang-en">IT Intern · Belgo Bekaert Arames Ltda</span>
+                </div>
+                <span class="acc-icon">▼</span>
+            </div>
+            <div class="accordion-content">
+                <div class="subtitulo lang lang-pt">2011 – 2012 · 1 ano</div>
+                <div class="subtitulo lang lang-en">2011 – 2012 · 1 year</div>
+
+                <ul class="lang lang-pt">
+                    <li>Responsável pela elaboração de relatórios para a gerência.</li>
+                    <li>Manutenção em celulares e computadores.</li>
+                    <li>Criação de requisições de compra no SAP.</li>
+                    <li>Atribuição de perfis de acesso no SAP.</li>
+                </ul>
+
+                <ul class="lang lang-en">
+                    <li>Prepared reports for management.</li>
+                    <li>Performed maintenance on mobile phones and computers.</li>
+                    <li>Created purchase requisitions in SAP.</li>
+                    <li>Assigned user access profiles in SAP.</li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FORMAÇÃO -->
+    <section id="formacao">
+        <h2 class="lang lang-pt">Formação &amp; Certificações</h2>
+        <h2 class="lang lang-en">Education &amp; Certifications</h2>
+
+        <div class="grid-2">
+            <!-- Graduação -->
+            <div class="card">
+                <h3 class="lang lang-pt">Bacharelado em Sistemas de Informação · Centro Universitário Newton Paiva</h3>
+                <h3 class="lang lang-en">Bachelor in Information Systems · Centro Universitário Newton Paiva</h3>
+                <div class="subtitulo lang lang-pt">2010 – 2013 · Belo Horizonte, Minas Gerais, Brasil</div>
+                <div class="subtitulo lang lang-en">2010 – 2013 · Belo Horizonte, Minas Gerais, Brazil</div>
+                <p class="lang lang-pt">
+                    Formação com foco em banco de dados, desenvolvimento de sistemas, arquitetura de software e fundamentos de redes.
+                </p>
+                <p class="lang lang-en">
+                    Degree focused on databases, systems development, software architecture and networking fundamentals.
+                </p>
+            </div>
+
+            <!-- Cursos Alura React/JS -->
+            <div class="card">
+                <h3 class="lang lang-pt">Cursos Alura - React / JavaScript · Alura</h3>
+                <h3 class="lang lang-en">Alura Courses - React / JavaScript · Alura</h3>
+                <div class="subtitulo lang lang-pt">Verificação emitida em mai de 2021</div>
+                <div class="subtitulo lang lang-en">Issued May 2021</div>
+                <p class="lang lang-pt">
+                    Formação focada em React.js, JavaScript moderno e boas práticas de desenvolvimento front-end.
+                </p>
+                <p class="lang lang-en">
+                    Training focused on React.js, modern JavaScript and best practices for front-end development.
+                </p>
+            </div>
+
+            <!-- Scrum Foundation -->
+            <div class="card">
+                <h3 class="lang lang-pt">Scrum Foundation Professional Certificate · Certiprof</h3>
+                <h3 class="lang lang-en">Scrum Foundation Professional Certificate · Certiprof</h3>
+                <div class="subtitulo lang lang-pt">Verificação emitida em jun de 2020 · Código: FLCLLWDWDS-SSJDGRGH-WHKNHDDTNF</div>
+                <div class="subtitulo lang lang-en">Issued Jun 2020 · Credential code: FLCLLWDWDS-SSJDGRGH-WHKNHDDTNF</div>
+                <p class="lang lang-pt">
+                    Conhecimentos em metodologias ágeis, fundamentos de Scrum, papéis, eventos e artefatos.
+                </p>
+                <p class="lang lang-en">
+                    Knowledge of agile methodologies, Scrum fundamentals, roles, events and artifacts.
+                </p>
+            </div>
+
+            <!-- Docker Alura -->
+            <div class="card">
+                <h3 class="lang lang-pt">Docker: Criando Containers sem Dor de Cabeça · Alura</h3>
+                <h3 class="lang lang-en">Docker: Creating Containers without Pain · Alura</h3>
+                <div class="subtitulo lang lang-pt">Verificação emitida em fev de 2020 · Código: 928d05a6-2fb7-4cc4-835f-3398596711c1</div>
+                <div class="subtitulo lang lang-en">Issued Feb 2020 · Code: 928d05a6-2fb7-4cc4-835f-3398596711c1</div>
+                <p class="lang lang-pt">
+                    Conceitos de containers, imagens, orquestração básica e boas práticas para ambientes Docker.
+                </p>
+                <p class="lang lang-en">
+                    Concepts of containers, images, basic orchestration and best practices for Docker environments.
+                </p>
+            </div>
+
+            <!-- Diversos cursos Alura -->
+            <div class="card">
+                <h3 class="lang lang-pt">Diversos cursos na Alura - PHP / React / Docker / MySQL · Alura</h3>
+                <h3 class="lang lang-en">Multiple Alura Courses - PHP / React / Docker / MySQL · Alura</h3>
+                <div class="subtitulo lang lang-pt">Verificação emitida em set de 2019</div>
+                <div class="subtitulo lang lang-en">Issued Sep 2019</div>
+                <p class="lang lang-pt">
+                    Trilhas de estudo em linguagens de programação, bancos de dados, frameworks PHP e desenvolvimento web.
+                </p>
+                <p class="lang lang-en">
+                    Learning tracks in programming languages, databases, PHP frameworks and web development.
+                </p>
+            </div>
+
+            <!-- Cursos de Infra, Redes e Linux -->
+            <div class="card">
+                <h3 class="lang lang-pt">Cursos em Infraestrutura, Redes e Linux</h3>
+                <h3 class="lang lang-en">Infrastructure, Networking and Linux Courses</h3>
+                <div class="subtitulo lang lang-pt">Instituto Online, Micronet, AS Treinamentos, Treinar</div>
+                <div class="subtitulo lang lang-en">Instituto Online, Micronet, AS Treinamentos, Treinar</div>
+                <p class="lang lang-pt">
+                    Curso CISCO CCNA R&amp;S (88h), Técnico em Hardware (48h), Web Designer (48h),
+                    Hands-on Certificação Linux LPI1 (72h), PFSENSE (72h), SAMBA4 (72h), SAP BASIS (40h) e VMware (48h),
+                    com foco em redes, servidores, segurança, virtualização e administração de ambientes Linux.
+                </p>
+                <p class="lang lang-en">
+                    Training including CISCO CCNA R&amp;S (88h), Hardware Technician (48h), Web Designer (48h),
+                    Hands-on Linux LPI1 Certification (72h), PFSENSE (72h), SAMBA4 (72h), SAP BASIS (40h) and VMware (48h),
+                    focused on networking, servers, security, virtualization and Linux systems administration.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades">
+        <h2 class="lang lang-pt">Habilidades</h2>
+        <h2 class="lang lang-en">Skills</h2>
+
+        <div class="card">
+            <h3 class="lang lang-pt">Competências Técnicas</h3>
+            <h3 class="lang lang-en">Technical Skills</h3>
+            <div>
+                <span class="tag lang lang-pt">PHP</span>
+                <span class="tag lang lang-en">PHP</span>
+
+                <span class="tag lang lang-pt">Zend Framework</span>
+                <span class="tag lang lang-en">Zend Framework</span>
+
+                <span class="tag lang lang-pt">Symfony</span>
+                <span class="tag lang lang-en">Symfony</span>
+
+                <span class="tag lang lang-pt">Laravel</span>
+                <span class="tag lang lang-en">Laravel</span>
+
+                <span class="tag lang lang-pt">JavaScript</span>
+                <span class="tag lang lang-en">JavaScript</span>
+
+                <span class="tag lang lang-pt">React</span>
+                <span class="tag lang lang-en">React</span>
+
+                <span class="tag lang lang-pt">Node.js</span>
+                <span class="tag lang lang-en">Node.js</span>
+
+                <span class="tag lang lang-pt">MySQL / MariaDB</span>
+                <span class="tag lang lang-en">MySQL / MariaDB</span>
+
+                <span class="tag lang lang-pt">APIs REST</span>
+                <span class="tag lang lang-en">REST APIs</span>
+
+                <span class="tag lang lang-pt">EDI · Logística</span>
+                <span class="tag lang lang-en">EDI · Logistics</span>
+
+                <span class="tag lang lang-pt">Docker</span>
+                <span class="tag lang lang-en">Docker</span>
+
+                <span class="tag lang lang-pt">Linux (Ubuntu, Manjaro)</span>
+                <span class="tag lang lang-en">Linux (Ubuntu, Manjaro)</span>
+
+                <span class="tag lang lang-pt">Windows</span>
+                <span class="tag lang lang-en">Windows</span>
+
+                <span class="tag lang lang-pt">Git &amp; Git Flow</span>
+                <span class="tag lang lang-en">Git &amp; Git Flow</span>
+
+                <span class="tag lang lang-pt">RabbitMQ</span>
+                <span class="tag lang lang-en">RabbitMQ</span>
+
+                <span class="tag lang lang-pt">VMware</span>
+                <span class="tag lang lang-en">VMware</span>
+
+                <span class="tag lang lang-pt">SQL Server</span>
+                <span class="tag lang lang-en">SQL Server</span>
+
+                <span class="tag lang lang-pt">HTML &amp; CSS</span>
+                <span class="tag lang lang-en">HTML &amp; CSS</span>
+
+                <span class="tag lang lang-pt">Bootstrap</span>
+                <span class="tag lang lang-en">Bootstrap</span>
+
+                <span class="tag lang lang-pt">Scrum &amp; Kanban</span>
+                <span class="tag lang lang-en">Scrum &amp; Kanban</span>
+
+                <span class="tag lang lang-pt">PHPUnit · Jest</span>
+                <span class="tag lang lang-en">PHPUnit · Jest</span>
+
+                <span class="tag lang lang-pt">Express · Sequelize</span>
+                <span class="tag lang lang-en">Express · Sequelize</span>
+            </div>
+
+            <div style="height:1px;background:#ddd;margin:15px 0;"></div>
+
+            <h3 class="lang lang-pt">Competências Comportamentais</h3>
+            <h3 class="lang lang-en">Behavioral Skills</h3>
+            <div>
+                <span class="tag lang lang-pt">Proatividade</span>
+                <span class="tag lang lang-en">Proactivity</span>
+
+                <span class="tag lang lang-pt">Resolução de Problemas</span>
+                <span class="tag lang lang-en">Problem Solving</span>
+
+                <span class="tag lang lang-pt">Trabalho em Equipe</span>
+                <span class="tag lang lang-en">Teamwork</span>
+
+                <span class="tag lang lang-pt">Comunicação</span>
+                <span class="tag lang lang-en">Communication</span>
+
+                <span class="tag lang lang-pt">Organização</span>
+                <span class="tag lang lang-en">Organization</span>
+
+                <span class="tag lang lang-pt">Foco em Resultados</span>
+                <span class="tag lang lang-en">Results-Driven</span>
+
+                <span class="tag lang lang-pt">Aprendizado Contínuo</span>
+                <span class="tag lang lang-en">Continuous Learning</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato">
+        <h2 class="lang lang-pt">Contato</h2>
+        <h2 class="lang lang-en">Contact</h2>
+
+        <div class="card">
+            <p class="lang lang-pt">📧 <strong>Email:</strong> wenderson.teixeira@outlook.com</p>
+            <p class="lang lang-en">📧 <strong>Email:</strong> wenderson.teixeira@outlook.com</p>
+
+            <p class="lang lang-pt">📱 <strong>Telefone / WhatsApp:</strong> (31) 9 9656-9608</p>
+            <p class="lang lang-en">📱 <strong>Phone / WhatsApp:</strong> +55 (31) 9 9656-9608</p>
+
+            <p class="lang lang-pt">
+                🔗 <strong>LinkedIn:</strong>
+                <a href="https://www.linkedin.com/in/wenderson-carvalho-8a16a829" target="_blank">
+                    /wenderson-carvalho-8a16a829
+                </a>
+            </p>
+
+            <p class="lang lang-en">
+                🔗 <strong>LinkedIn:</strong>
+                <a href="https://www.linkedin.com/in/wenderson-carvalho-8a16a829" target="_blank">
+                    /wenderson-carvalho-8a16a829
+                </a>
+            </p>
+        </div>
+    </section>
+
+    <!-- BOTÃO DARK -->
+    <button id="darkBtn" onclick="toggleDark()">🌙</button>
+
+    <!-- JS INTERAÇÕES -->
+    <script>
+        /* MENU */
+        function toggleMenu() {
+            const menu = document.getElementById("menuNav");
+            menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+        }
+
+        /* DARK MODE SIMPLES */
+        function toggleDark() {
+            document.body.classList.toggle("dark");
+        }
+
+        /* ACCORDION */
+        const accordions = document.querySelectorAll(".accordion");
+        accordions.forEach(acc => {
+            const content = acc.nextElementSibling;
+            const icon = acc.querySelector(".acc-icon");
+
+            // inicia fechado
+            content.style.maxHeight = "0px";
+
+            acc.addEventListener("click", () => {
+                acc.classList.toggle("open");
+                if (acc.classList.contains("open")) {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.textContent = "▲";
+                } else {
+                    content.style.maxHeight = "0px";
+                    icon.textContent = "▼";
+                }
+            });
+        });
+
+        /* Scroll reveal */
+        const cards = document.querySelectorAll(".card");
+        function reveal() {
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 50) {
+                    card.classList.add("visible");
+                }
+            });
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+
+        /* LANGUAGE SWITCH */
+        function setLanguage(lang) {
+            const isPT = (lang === "pt");
+            const ptElements = document.querySelectorAll(".lang-pt");
+            const enElements = document.querySelectorAll(".lang-en");
+            const btnPT = document.getElementById("btn-pt");
+            const btnEN = document.getElementById("btn-en");
+            const typing = document.getElementById("typingText");
+
+            ptElements.forEach(el => el.style.display = isPT ? "" : "none");
+            enElements.forEach(el => el.style.display = isPT ? "none" : "");
+
+            btnPT.classList.toggle("active", isPT);
+            btnEN.classList.toggle("active", !isPT);
+
+            // Atualiza texto do typing conforme idioma
+            typing.style.animation = "none"; // reseta animação
+            if (isPT) {
+                typing.textContent = "Desenvolvedor Web | PHP · Zend · Symfony · Laravel · React · Node.js | Infraestrutura de TI & Logística";
+            } else {
+                typing.textContent = "Web Developer | PHP · Zend · Symfony · Laravel · React · Node.js | IT Infrastructure & Logistics";
+            }
+            // força reflow para reiniciar animação
+            void typing.offsetWidth;
+            typing.style.animation = "caret .7s infinite";
+        }
+
+        // inicia em PT
+        setLanguage("pt");
+    </script>
+
+</body>
+</html>

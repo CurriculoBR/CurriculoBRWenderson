@@ -839,9 +839,23 @@
             typing.style.animation = "caret .7s infinite";
         }
 
+        function tipoDispositivo() {
+            const userAgent = navigator.userAgent.toLowerCase();
+        
+            if (/mobile|android|iphone|ipad|ipod/.test(userAgent)) {
+                return "mobile"; // celular/tablet
+            }
+        
+            return "desktop"; // computador
+        }
+
+// Exemplo de uso:
+console.log("Dispositivo:", tipoDispositivo());
+
         // inicia em PT
         setLanguage("pt");
     </script>
 
 </body>
 </html>
+
